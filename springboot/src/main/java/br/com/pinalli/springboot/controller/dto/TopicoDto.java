@@ -1,12 +1,14 @@
 package br.com.pinalli.springboot.controller.dto;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+
+
+
+import org.springframework.data.domain.Page;
 
 import br.com.pinalli.springboot.model.Topico;
 
-public class TopicoDto {  //(Data Transfer Object)
+public class TopicoDto {  //DTO (Data Transfer Object)
 	
 	private long id;
 	private String titulo;
@@ -37,9 +39,9 @@ public class TopicoDto {  //(Data Transfer Object)
 	}
 
 
-	public static List<TopicoDto> converter(List<Topico> topicos) {
+	public static Page<TopicoDto> converter(Page<Topico> topicos) {
 		
-		return topicos.stream().map(TopicoDto::new).collect(Collectors.toList());
+		return topicos.map(TopicoDto:: new);
 	}
 	
 	
