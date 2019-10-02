@@ -16,43 +16,38 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
-    
+
 	@Autowired
 	private AutenticacaoService autenticacaoService;
 	
 	@Override
 	@Bean
-	protected AuthenticationManager authenticationManager() throws Exception{
+	protected AuthenticationManager authenticationManager() throws Exception {
 		return super.authenticationManager();
 	}
 	
-	
-	
-	@Override //CONFIGURAÇÕES DE AUTENTICACAO
+	//Configuracoes de autenticacao
+	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(autenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
-
 	}
-
-	@Override//CONFIGURAÇÕES DE AUTORIXAÇAO
+	
+	//Configuracoes de autorizacao
+	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		.antMatchers(HttpMethod.GET,"/topicos").permitAll()
+		.antMatchers(HttpMethod.GET, "/topicos").permitAll()
 		.antMatchers(HttpMethod.GET, "/topicos/*").permitAll()
-		.antMatchers(HttpMethod.POST, "/auth").permitAll()
+		.antMatchers(HttpMethod.POST, "/auth").permitAll()//url de login
 		.anyRequest().authenticated()
-		.and().csrf().disable()
+		.and().csrf().disable()//livrar de ataque hacker
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		
 	}
 	
-	@Override //CONFIGURAÇÕES DE RECURSOS ESTATICOS( CSS, JS, IMAGENS)
+	
+	//Configuracoes de recursos estaticos(js, css, imagens, etc.)
+	@Override
 	public void configure(WebSecurity web) throws Exception {
-	
 	}
 	
-//	public static void main(String[] args) {
-	//	System.out.println(new BCryptPasswordEncoder().encode("123456"));
-	//	
-	//}
 }
